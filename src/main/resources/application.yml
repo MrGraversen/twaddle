@@ -1,0 +1,13 @@
+spring:
+  h2:
+    console:
+      enabled: true
+      path: /sql
+
+security:
+  signing-key: SomeAmazingKey
+  jwt:
+    client-id: twaddle
+    client-secret: VerySecret
+    grant-type: password
+    access-token-validity-seconds: 3600
