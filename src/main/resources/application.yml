@@ -11,3 +11,11 @@ security:
     client-secret: VerySecret
     grant-type: password
     access-token-validity-seconds: 3600
+
+elasticsearch:
+  hosts:
+    - http://localhost:9200
+  connectTimeout: 10000
+  connectionRequestTimeout: 10000
+  socketTimeout: 10000
+  maxRetryTimeoutMillis: 60000
