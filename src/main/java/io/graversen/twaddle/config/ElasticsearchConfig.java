@@ -1,5 +1,6 @@
 package io.graversen.twaddle.config;
 
+import io.graversen.twaddle.lib.ElasticMapper;
 import org.elasticsearch.client.Client;
 import org.elasticsearch.common.settings.Settings;
 import org.elasticsearch.common.transport.TransportAddress;
@@ -29,7 +30,7 @@ public class ElasticsearchConfig
     public Client client()
     {
         final TransportAddress transportAddress = new TransportAddress(elasticHost(), elasticPort);
-        final Settings settings = Settings.builder().put("client.transport.sniff", false ).put("cluster.name", elasticClusterName).build();
+        final Settings settings = Settings.builder().put("client.transport.sniff", false).put("cluster.name", elasticClusterName).build();
 
         return new PreBuiltTransportClient(settings).addTransportAddress(transportAddress);
     }
@@ -37,7 +38,7 @@ public class ElasticsearchConfig
     @Bean
     public ElasticsearchOperations elasticsearchTemplate()
     {
-        return new ElasticsearchTemplate(client());
+        return new ElasticsearchTemplate(client(), new ElasticMapper());
     }
 
     private InetAddress elasticHost()
