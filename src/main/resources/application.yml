@@ -3,3 +3,8 @@ spring:
     console:
       enabled: true
       path: /sql
+
+elasticsearch:
+  address: localhost
+  port: 9200
+  cluster-name: elasticsearch
