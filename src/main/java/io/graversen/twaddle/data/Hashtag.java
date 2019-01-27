@@ -8,6 +8,5 @@ public class Hashtag
 {
     @Id
     private String id;
-
     private String tagName;
 }

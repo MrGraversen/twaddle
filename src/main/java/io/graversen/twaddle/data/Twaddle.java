@@ -14,5 +14,5 @@ public class Twaddle
     private String id;
     private String username;
     private LocalDateTime createdAt;
-    private String text;
+    private String userId;
 }
