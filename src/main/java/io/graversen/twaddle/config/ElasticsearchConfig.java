@@ -29,7 +29,7 @@ public class ElasticsearchConfig
     public Client client()
     {
         final TransportAddress transportAddress = new TransportAddress(elasticHost(), elasticPort);
-        final Settings settings = Settings.builder().put("cluster.name", elasticClusterName).build();
+        final Settings settings = Settings.builder().put("client.transport.sniff", false ).put("cluster.name", elasticClusterName).build();
 
         return new PreBuiltTransportClient(settings).addTransportAddress(transportAddress);
     }
