@@ -8,6 +8,7 @@ import org.springframework.data.elasticsearch.annotations.Field;
 import org.springframework.data.elasticsearch.annotations.FieldType;
 
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.UUID;
 
 @Data
@@ -25,4 +26,7 @@ public class Twaddle
 
     @NonNull
     private String text;
+
+    @Field(type = FieldType.Nested)
+    private List<Hashtag> hashtags;
 }

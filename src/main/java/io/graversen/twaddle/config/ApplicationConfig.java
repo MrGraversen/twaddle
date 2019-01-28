@@ -27,7 +27,7 @@ public class ApplicationConfig implements ApplicationListener<ApplicationReadyEv
         twaddleRepository.deleteAll();
         hashTagRepository.deleteAll();
 
-        hashTagRepository.save(new Hashtag("yolo"))
+        hashTagRepository.save(new Hashtag("yolo"));
         twaddleRepository.save(new Twaddle("martin-1337", "This works!"));
         userRepository.save(new User("martin-1337", "martin"));
     }
