@@ -13,7 +13,7 @@ public class User
 {
     @Id
     @GeneratedValue
-    private long id;
+    private Long id;
 
     @NonNull
     @Column(name = "user_id")
