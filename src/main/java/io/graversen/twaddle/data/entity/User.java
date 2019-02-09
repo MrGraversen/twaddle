@@ -1,12 +1,16 @@
 package io.graversen.twaddle.data.entity;
 
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import lombok.NonNull;
+import lombok.RequiredArgsConstructor;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
 
 @Data
+@RequiredArgsConstructor
+@NoArgsConstructor
 @Entity
 @Table(name = "user")
 public class User
