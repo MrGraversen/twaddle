@@ -6,11 +6,15 @@ import io.graversen.twaddle.data.entity.User;
 import io.graversen.twaddle.data.repository.elastic.IHashTagRepository;
 import io.graversen.twaddle.data.repository.elastic.ITwaddleRepository;
 import io.graversen.twaddle.data.repository.jpa.IUserRepository;
+import io.graversen.twaddle.lib.Utils;
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.context.event.ApplicationReadyEvent;
 import org.springframework.context.ApplicationListener;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
+
+import java.util.List;
 
 @Configuration
 @ComponentScan(basePackages = {})
@@ -30,5 +34,17 @@ public class ApplicationConfig implements ApplicationListener<ApplicationReadyEv
         hashTagRepository.save(new Hashtag("yolo"));
         twaddleRepository.save(new Twaddle("martin-1337", "This works!"));
         userRepository.save(new User("martin-1337", "martin"));
+    }
+
+    @Bean
+    public List<String> adjectives()
+    {
+        return Utils.resourceLines("adjectives.txt");
+    }
+
+    @Bean
+    public List<String> animals()
+    {
+        return Utils.resourceLines("animals.txt");
     }
 }
