@@ -1,10 +1,18 @@
-
-
 spring:
+  application:
+    name: twaddle-app
   h2:
     console:
       enabled: true
       path: /sql
+  cloud:
+    stream:
+      default-binder: rabbit
+  rabbitmq:
+    host: localhost
+    port: 5672
+    username: guest
+    password: guest
 
 elasticsearch:
   address: 127.0.0.1

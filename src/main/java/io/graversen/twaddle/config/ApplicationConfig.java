@@ -5,9 +5,9 @@ import io.graversen.twaddle.data.repository.elastic.IHashTagRepository;
 import io.graversen.twaddle.data.repository.elastic.ITwaddleRepository;
 import io.graversen.twaddle.data.repository.jpa.IUserRepository;
 import io.graversen.twaddle.lib.Utils;
-import io.graversen.twaddle.service.TwaddlesService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.context.event.ApplicationReadyEvent;
+import org.springframework.cloud.stream.annotation.EnableBinding;
 import org.springframework.context.ApplicationListener;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
@@ -19,12 +19,12 @@ import java.util.UUID;
 import java.util.stream.IntStream;
 
 @Configuration
-@ComponentScan(basePackages = {"io.graversen.twaddle.service"})
+@ComponentScan(basePackages = {"io.graversen.twaddle.service", "io.graversen.twaddle.api", "io.graversen.twaddle.web"})
 @EnableScheduling
 @RequiredArgsConstructor
 public class ApplicationConfig implements ApplicationListener<ApplicationReadyEvent>
 {
-    private final static int NUMBER_OF_USERS = 1337;
+    private final static int NUMBER_OF_RANDOM_USERS = 1337;
 
     private final ITwaddleRepository twaddleRepository;
     private final IHashTagRepository hashTagRepository;
@@ -37,7 +37,11 @@ public class ApplicationConfig implements ApplicationListener<ApplicationReadyEv
         hashTagRepository.deleteAll();
         userRepository.deleteAll();
 
-        IntStream.rangeClosed(0, NUMBER_OF_USERS).forEach(
+        userRepository.save(new User("MARTIN", "MARTIN"));
+        userRepository.save(new User("STEFFEN", "STEFFEN"));
+        userRepository.save(new User("LASSE", "LASSE"));
+
+        IntStream.rangeClosed(0, NUMBER_OF_RANDOM_USERS).forEach(
                 x -> userRepository.save(new User(UUID.randomUUID().toString(), Utils.randomUsername(animals(), adjectives())))
         );
     }
