@@ -7,12 +7,22 @@ spring:
       path: /sql
   cloud:
     stream:
-      default-binder: rabbit
-  rabbitmq:
-    host: localhost
-    port: 5672
-    username: guest
-    password: guest
+      binders:
+        local_rabbit:
+          type: rabbit
+          environment:
+            spring:
+              rabbitmq:
+                host: localhost
+                port: 5672
+                username: guest
+                password: guest
+
+#  rabbitmq:
+#    host: localhost
+#    port: 5672
+#    username: guest
+#    password: guest
 
 elasticsearch:
   address: 127.0.0.1
