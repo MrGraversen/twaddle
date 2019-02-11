@@ -41,19 +41,19 @@ public class TwaddlesService
             if (random.nextBoolean())
             {
                 final Twaddle twaddle = new Twaddle(user.getUserId(), Utils.randomTwaddle(animals, adjectives));
-                twaddleChannels.twaddlesOutput().send(MessageBuilder.withPayload(twaddle).build());
+                twaddleChannels.twaddles().send(MessageBuilder.withPayload(twaddle).build());
             }
         });
     }
 
-    @StreamListener("twaddlesInput")
+    @StreamListener("twaddles")
     public void emitTwaddle(Twaddle twaddle)
     {
         final List<SseEmitter> sseEmitters = userTwaddleSubscriptions.getOrDefault(twaddle.getUserId(), Collections.emptyList());
         sseEmitters.forEach(doEmitTwaddle(twaddle));
     }
 
-    @StreamListener("twaddlesInput")
+    @StreamListener("twaddles")
     public void saveTwaddle(Twaddle twaddle)
     {
         twaddleRepository.save(twaddle);
