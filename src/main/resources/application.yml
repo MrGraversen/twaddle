@@ -1,6 +1,8 @@
 spring:
   application:
     name: twaddle-app
+  thymeleaf:
+    cache: false
   h2:
     console:
       enabled: true
