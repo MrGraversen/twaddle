@@ -1,7 +1,9 @@
 package io.graversen.twaddle.data.document;
 
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import lombok.NonNull;
+import lombok.RequiredArgsConstructor;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.elasticsearch.annotations.Document;
 import org.springframework.data.elasticsearch.annotations.Field;
@@ -12,6 +14,8 @@ import java.util.List;
 import java.util.UUID;
 
 @Data
+@RequiredArgsConstructor
+@NoArgsConstructor
 @Document(indexName = "twaddles", type = "twaddle")
 public class Twaddle
 {

@@ -1,5 +1,6 @@
 package io.graversen.twaddle.config;
 
+import io.graversen.twaddle.data.document.Twaddle;
 import io.graversen.twaddle.data.entity.User;
 import io.graversen.twaddle.data.repository.elastic.IHashTagRepository;
 import io.graversen.twaddle.data.repository.elastic.ITwaddleRepository;
@@ -24,7 +25,7 @@ import java.util.stream.IntStream;
 @RequiredArgsConstructor
 public class ApplicationConfig implements ApplicationListener<ApplicationReadyEvent>
 {
-    private final static int NUMBER_OF_RANDOM_USERS = 1337;
+    private final static int NUMBER_OF_RANDOM_USERS = 1000;
 
     private final ITwaddleRepository twaddleRepository;
     private final IHashTagRepository hashTagRepository;
@@ -37,13 +38,19 @@ public class ApplicationConfig implements ApplicationListener<ApplicationReadyEv
         hashTagRepository.deleteAll();
         userRepository.deleteAll();
 
-        userRepository.save(new User("MARTIN", "MARTIN"));
+        final User userMartin = userRepository.save(new User("MARTIN", "MARTIN"));
         userRepository.save(new User("STEFFEN", "STEFFEN"));
         userRepository.save(new User("LASSE", "LASSE"));
 
         IntStream.rangeClosed(0, NUMBER_OF_RANDOM_USERS).forEach(
                 x -> userRepository.save(new User(UUID.randomUUID().toString(), Utils.randomUsername(animals(), adjectives())))
         );
+
+        IntStream.rangeClosed(0, 10).forEach(x ->
+        {
+            final Twaddle twaddle = new Twaddle(userMartin.getUserId(), Utils.randomTwaddle(animals(), adjectives()));
+            twaddleRepository.save(twaddle);
+        });
     }
 
     @Bean
