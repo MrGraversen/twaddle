@@ -42,11 +42,11 @@ public class ApplicationConfig implements ApplicationListener<ApplicationReadyEv
         userRepository.save(new User("STEFFEN", "STEFFEN"));
         userRepository.save(new User("LASSE", "LASSE"));
 
-        IntStream.rangeClosed(0, NUMBER_OF_RANDOM_USERS).forEach(
+        IntStream.range(0, NUMBER_OF_RANDOM_USERS).forEach(
                 x -> userRepository.save(new User(UUID.randomUUID().toString(), Utils.randomUsername(animals(), adjectives())))
         );
 
-        IntStream.rangeClosed(0, 10).forEach(x ->
+        IntStream.range(0, 10).forEach(x ->
         {
             final Twaddle twaddle = new Twaddle(userMartin.getUserId(), Utils.randomTwaddle(animals(), adjectives()));
             twaddleRepository.save(twaddle);

@@ -14,7 +14,7 @@ public class Utils
 
     private static final String[] twaddles = new String[]{
             "My favourite number is: %s",
-            "I feel very %s today",
+            "I feel %s today",
             "I have a pet %s",
             "My pet %s is %s!",
             "I need %s %s %s!",
