@@ -10,6 +10,7 @@
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.4.1/css/all.css" integrity="sha384-5sAR7xN1Nv6T6+dT2mhtzEpVJvfS3NScPQTrOxhwjIuvcA67KV2R5Jz6kr4abQsz"
           crossorigin="anonymous">
     <script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js" integrity="sha256-T0Vest3yCU7pafRw9r+settMBX6JkKN06dqBnpQ8d30=" crossorigin="anonymous"></script>
     <link rel="stylesheet" type="text/css" th:href="@{/css/style.css}"/>
 </head>
 
@@ -49,8 +50,13 @@
         const source = new EventSource(`/api/users/${userId}/stream`);
         source.onmessage = function (event) {
             let data = JSON.parse(event.data);
-            $('table tbody').prepend('<tr><td>' + data.text + '</td></tr>').fadeIn("slow");
-            $('table tbody tr:last').slidetoggle()
+            $('table > tbody').prepend('<tr><td>' + data.text + '</td></tr>');
+
+            $('table > tbody > tr:first').animate({backgroundColor: "#00ff7f"}, 100, function () {
+                $('table > tbody > tr:first').animate({backgroundColor: "#FFFFFF"}, 400);
+            });
+
+            $('table > tbody > tr:last').remove();
         };
     });
 </script>

@@ -13,6 +13,9 @@ import org.springframework.context.ApplicationListener;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.core.task.AsyncTaskExecutor;
+import org.springframework.core.task.SimpleAsyncTaskExecutor;
+import org.springframework.scheduling.annotation.EnableAsync;
 import org.springframework.scheduling.annotation.EnableScheduling;
 
 import java.util.List;
@@ -22,6 +25,7 @@ import java.util.stream.IntStream;
 @Configuration
 @ComponentScan(basePackages = {"io.graversen.twaddle.service", "io.graversen.twaddle.api", "io.graversen.twaddle.web"})
 @EnableScheduling
+@EnableAsync
 @RequiredArgsConstructor
 public class ApplicationConfig implements ApplicationListener<ApplicationReadyEvent>
 {
@@ -51,6 +55,11 @@ public class ApplicationConfig implements ApplicationListener<ApplicationReadyEv
             final Twaddle twaddle = new Twaddle(userMartin.getUserId(), Utils.randomTwaddle(animals(), adjectives()));
             twaddleRepository.save(twaddle);
         });
+    }
+
+    @Bean
+    public AsyncTaskExecutor asyncTaskExecutor() {
+        return new SimpleAsyncTaskExecutor();
     }
 
     @Bean

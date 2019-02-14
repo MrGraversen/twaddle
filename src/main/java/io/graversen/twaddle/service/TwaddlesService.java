@@ -20,6 +20,7 @@ import java.util.List;
 import java.util.Random;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
+import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.function.Consumer;
 
 @Service
@@ -73,13 +74,13 @@ public class TwaddlesService
 
     public void subscribe(User user, SseEmitter sseEmitter)
     {
-        final List<SseEmitter> sseEmitters = twaddleSubscriptions.computeIfAbsent(user.getUserId(), s -> new ArrayList<>());
+        final List<SseEmitter> sseEmitters = twaddleSubscriptions.computeIfAbsent(user.getUserId(), s -> new CopyOnWriteArrayList<>());
         sseEmitters.add(sseEmitter);
     }
 
     public void unsubscribe(User user, SseEmitter sseEmitter)
     {
-        final List<SseEmitter> sseEmitters = twaddleSubscriptions.computeIfAbsent(user.getUserId(), s -> new ArrayList<>());
+        final List<SseEmitter> sseEmitters = twaddleSubscriptions.computeIfAbsent(user.getUserId(), s -> new CopyOnWriteArrayList<>());
         sseEmitters.remove(sseEmitter);
     }
 
@@ -93,7 +94,7 @@ public class TwaddlesService
             }
             catch (IOException e)
             {
-                e.printStackTrace();
+                // ¯\_(ツ)_/¯
             }
         };
     }
