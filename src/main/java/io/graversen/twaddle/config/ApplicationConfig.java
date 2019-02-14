@@ -8,7 +8,6 @@ import io.graversen.twaddle.data.repository.jpa.IUserRepository;
 import io.graversen.twaddle.lib.Utils;
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.context.event.ApplicationReadyEvent;
-import org.springframework.cloud.stream.annotation.EnableBinding;
 import org.springframework.context.ApplicationListener;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
@@ -29,7 +28,7 @@ import java.util.stream.IntStream;
 @RequiredArgsConstructor
 public class ApplicationConfig implements ApplicationListener<ApplicationReadyEvent>
 {
-    private final static int NUMBER_OF_RANDOM_USERS = 1000;
+    private final static int NUMBER_OF_RANDOM_USERS = 100;
 
     private final ITwaddleRepository twaddleRepository;
     private final IHashTagRepository hashTagRepository;

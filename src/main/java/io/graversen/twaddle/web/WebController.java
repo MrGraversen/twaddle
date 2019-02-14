@@ -49,7 +49,7 @@ public class WebController
 
         final long start = System.currentTimeMillis();
         final Page<Twaddle> twaddles =
-                twaddleRepository.findByUserId(userId, PageRequest.of(0, 10, Sort.by(Sort.Direction.DESC, "createdAt")));
+                twaddleRepository.findByUserId(userId, PageRequest.of(0, 15, Sort.by(Sort.Direction.DESC, "createdAt")));
         final long latency = System.currentTimeMillis() - start;
 
         ModelAndView modelAndView = new ModelAndView("user");

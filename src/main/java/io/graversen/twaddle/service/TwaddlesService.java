@@ -14,7 +14,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Random;
@@ -36,26 +35,30 @@ public class TwaddlesService
     private final Random random = new Random();
     private final ConcurrentMap<String, List<SseEmitter>> twaddleSubscriptions = new ConcurrentHashMap<>();
 
+    private List<User> users = null;
+
     @Scheduled(fixedRate = 2000L, initialDelay = 2000L)
     public void generateRandomTwaddles()
     {
-        userRepository.findAll().forEach(user ->
+        if (users == null)
         {
+            users = Collections.synchronizedList(userRepository.findAll());
+        }
+
+        users.forEach(user ->
+        {
+            if ("MARTIN".equals(user.getUserId()))
+            {
+                final Twaddle twaddle = new Twaddle(user.getUserId(), Utils.randomTwaddle(animals, adjectives));
+                twaddleChannels.twaddles().send(MessageBuilder.withPayload(twaddle).build());
+                return;
+            }
+
             if (random.nextBoolean())
             {
                 final Twaddle twaddle = new Twaddle(user.getUserId(), Utils.randomTwaddle(animals, adjectives));
                 twaddleChannels.twaddles().send(MessageBuilder.withPayload(twaddle).build());
             }
-        });
-    }
-
-    @Scheduled(fixedRate = 2000L, initialDelay = 2000L)
-    public void generateRandomTwaddleForMartin()
-    {
-        userRepository.findByUserId("MARTIN").ifPresent(user ->
-        {
-            final Twaddle twaddle = new Twaddle(user.getUserId(), Utils.randomTwaddle(animals, adjectives));
-            twaddleChannels.twaddles().send(MessageBuilder.withPayload(twaddle).build());
         });
     }
 
