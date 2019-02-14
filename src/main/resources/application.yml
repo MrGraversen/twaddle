@@ -1,6 +1,9 @@
 spring:
   application:
     name: twaddle-app
+  mvc:
+    async:
+      request-timeout: 3600000
   thymeleaf:
     cache: false
   h2:
@@ -19,6 +22,9 @@ spring:
                 port: 5672
                 username: guest
                 password: guest
+  datasource:
+    hikari:
+      maximum-pool-size: 100
 
 #  rabbitmq:
 #    host: localhost
