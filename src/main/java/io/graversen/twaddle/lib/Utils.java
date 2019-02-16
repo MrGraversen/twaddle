@@ -110,4 +110,9 @@ public class Utils
     {
         return readableDateTimeFormatter;
     }
+
+    public static List<String> defaultUsers()
+    {
+        return List.of("MARTIN", "STEFFEN");
+    }
 }

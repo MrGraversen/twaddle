@@ -38,20 +38,15 @@ public class ApplicationConfig implements ApplicationListener<ApplicationReadyEv
     @Override
     public void onApplicationEvent(ApplicationReadyEvent applicationReadyEvent)
     {
-        twaddleRepository.deleteAll();
-        hashTagRepository.deleteAll();
+//        twaddleRepository.deleteAll();
+//        hashTagRepository.deleteAll();
         userRepository.deleteAll();
 
-        final User userMartin = userRepository.save(new User("MARTIN", "MARTIN"));
+        Utils.defaultUsers().forEach(user -> userRepository.save(new User(user, user)));
 
         IntStream.range(0, NUMBER_OF_RANDOM_USERS)
                 .forEach(x -> userRepository.save(new User(UUID.randomUUID().toString(), Utils.randomUsername(animals(), adjectives()))));
 
-        IntStream.range(0, 10).forEach(x ->
-        {
-            final Twaddle twaddle = new Twaddle(userMartin.getUserId(), Utils.randomTwaddle(animals(), adjectives(), cities(), colors()));
-            twaddleRepository.save(twaddle);
-        });
     }
 
     @Bean

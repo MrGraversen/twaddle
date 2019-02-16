@@ -38,20 +38,30 @@ public class TwaddlesService
     private final ConcurrentMap<String, List<SseEmitter>> twaddleSubscriptions = new ConcurrentHashMap<>();
 
     private List<User> users = null;
+    private long usersUpdated = System.currentTimeMillis();
+    private long userUpdateInterval = 30000L;
 
     @Scheduled(fixedRate = 2000L, initialDelay = 2000L)
     public void generateRandomTwaddles()
     {
-        if (users == null)
+        if (users == null || (System.currentTimeMillis() > (usersUpdated + userUpdateInterval)))
         {
             users = Collections.synchronizedList(userRepository.findAll());
+            usersUpdated = System.currentTimeMillis();
         }
 
         users.forEach(user ->
         {
+            final Twaddle twaddle = new Twaddle(user.getUserId(), Utils.randomTwaddle(animals, adjectives, cities, colors));
+
+            if (Utils.defaultUsers().contains(user.getUserId()))
+            {
+                twaddleChannels.twaddles().send(MessageBuilder.withPayload(twaddle).build());
+                return;
+            }
+
             if (random.nextBoolean())
             {
-                final Twaddle twaddle = new Twaddle(user.getUserId(), Utils.randomTwaddle(animals, adjectives, cities, colors));
                 twaddleChannels.twaddles().send(MessageBuilder.withPayload(twaddle).build());
             }
         });

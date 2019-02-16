@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.servlet.ModelAndView;
 
+import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
 import java.util.function.Function;
@@ -34,6 +35,7 @@ public class WebController
         final List<UserModel> userModels = userRepository.findAll()
                 .stream()
                 .map(mapUserModel())
+                .sorted(Comparator.comparing(UserModel::getTwaddles).reversed())
                 .collect(Collectors.toList());
 
         ModelAndView modelAndView = new ModelAndView("index");
