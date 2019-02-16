@@ -44,8 +44,14 @@ public class WebController
         return modelAndView;
     }
 
+    @GetMapping("/users")
+    public ModelAndView user()
+    {
+        return new ModelAndView("redirect:/");
+    }
+
     @GetMapping("/users/{userId}")
-    public ModelAndView user(@PathVariable String userId)
+    public ModelAndView userById(@PathVariable String userId)
     {
         if ("random".equalsIgnoreCase(userId))
         {

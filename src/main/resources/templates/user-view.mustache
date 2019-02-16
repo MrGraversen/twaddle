@@ -1,8 +1,10 @@
 {{>header}}
 
 <main role="main" class="container">
-    <h1 class="mt-5 display-4">{{user.username}}</h1>
-    <p class="lead">Read the musings of {{user.username}}.</p>
+    <div class="container">
+        <h1 class="mt-5 display-4">{{user.username}}</h1>
+        <p class="lead">Read the musings of {{user.username}}.</p>
+    </div>
 
     <div class="row mt-5 justify-content-center" id="twaddle-container"></div>
 
@@ -34,7 +36,7 @@
         function populateTwaddle(data, highlight) {
             let twaddleElementClone = twaddleElement.clone();
             twaddleElementClone.find('#twaddle-text').text(data.text);
-            twaddleElementClone.find('#twaddle-created-at').text(data.createdAt);
+            twaddleElementClone.find('#twaddle-created-at').text('Submitted ' + data.createdAt);
             twaddleElementClone.removeAttr('hidden');
 
             twaddleContainer.prepend(twaddleElementClone);
