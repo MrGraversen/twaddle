@@ -9,16 +9,15 @@ import io.graversen.twaddle.data.repository.jpa.IUserRepository;
 import io.graversen.twaddle.lib.Utils;
 import io.graversen.twaddle.service.TwaddlesService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.mvc.method.annotation.ResponseBodyEmitter;
 import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
 
-import java.util.Optional;
 import java.util.function.Function;
 
 @RestController
@@ -30,6 +29,9 @@ public class UsersController
     private final ITwaddleRepository twaddleRepository;
     private final TwaddlesService twaddlesService;
 
+    @Value("${twaddle.viewSize}")
+    private int viewSize;
+
     @PostMapping
     public ResponseEntity<Void> createTwaddle()
     {
@@ -40,7 +42,7 @@ public class UsersController
     public ResponseEntity<TwaddlesModel> getTwaddle(@PathVariable String userId)
     {
         final User user = userRepository.findByUserId(userId).orElseThrow();
-        final Page<Twaddle> twaddles = twaddleRepository.findByUserId(user.getUserId(), defaultTwaddlesPage());
+        final Page<Twaddle> twaddles = twaddleRepository.findByUserIdOrderByCreatedAtDesc(user.getUserId(), defaultTwaddlesPage());
 
         return ResponseEntity.ok(
                 new TwaddlesModel(twaddles.map(mapTwaddle()).getContent())
@@ -68,7 +70,7 @@ public class UsersController
 
     private PageRequest defaultTwaddlesPage()
     {
-        return PageRequest.of(0, 20, new Sort(Sort.Direction.DESC, "createdAt"));
+        return PageRequest.of(0, viewSize);
     }
 
     private Function<Twaddle, TwaddleModel> mapTwaddle()

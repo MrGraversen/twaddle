@@ -4,30 +4,51 @@
     <h1 class="mt-5 display-4">{{user.username}}</h1>
     <p class="lead">Read the musings of {{user.username}}.</p>
 
-    <div class="row mt-5 justify-content-center">
-        {{>twaddle}}
-    </div>
+    <div class="row mt-5 justify-content-center" id="twaddle-container"></div>
+
+    {{>twaddle}}
 </main>
 
 <script>
     const userId = '{{user.userId}}';
+    const viewSize = '{{viewSize}}';
     const twaddlesUrl = `/api/users/${userId}/twaddles`;
     const twaddlesStreamUrl = `/api/users/${userId}/twaddles/stream`;
+    const twaddleElement = $('#a-twaddle');
+    const twaddleContainer = $('#twaddle-container');
 
     $(document).ready(function () {
         $.get(twaddlesUrl).done(onTwaddles);
 
-        // const source = new EventSource(`/api/users/${userId}/stream`);
-        // source.onmessage = function (event) {
-        //
-        // };
+        const source = new EventSource(twaddlesStreamUrl);
+        source.onmessage = function (event) {
+            let data = JSON.parse(event.data);
+            populateTwaddle(data, true);
+            removeLastTwaddle();
+        };
 
         function onTwaddles(data) {
-            data.twaddles.forEach(populateTwaddle);
+            data.twaddles.reverse().forEach(x => populateTwaddle(x, false));
         }
 
-        function populateTwaddle(data) {
-            console.log(data);
+        function populateTwaddle(data, highlight) {
+            let twaddleElementClone = twaddleElement.clone();
+            twaddleElementClone.find('#twaddle-text').text(data.text);
+            twaddleElementClone.find('#twaddle-created-at').text(data.createdAt);
+
+            twaddleContainer.prepend(twaddleElementClone);
+
+            if (highlight === true) {
+                twaddleElementClone.animate({backgroundColor: "#00ff7f"}, 200, function () {
+                    twaddleElementClone.animate({backgroundColor: "#FFFFFF"}, 800);
+                });
+            }
+        }
+
+        function removeLastTwaddle() {
+            if (twaddleContainer.children().length > viewSize) {
+                twaddleContainer.children('#a-twaddle').last().remove();
+            }
         }
     });
 </script>

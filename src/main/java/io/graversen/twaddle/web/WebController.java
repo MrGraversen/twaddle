@@ -1,15 +1,12 @@
 package io.graversen.twaddle.web;
 
-import io.graversen.twaddle.data.document.Twaddle;
 import io.graversen.twaddle.data.entity.User;
 import io.graversen.twaddle.data.model.UserModel;
 import io.graversen.twaddle.data.repository.elastic.ITwaddleRepository;
 import io.graversen.twaddle.data.repository.jpa.IUserRepository;
 import io.graversen.twaddle.lib.Utils;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Sort;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -28,6 +25,9 @@ public class WebController
     private final IUserRepository userRepository;
     private final ITwaddleRepository twaddleRepository;
     private final List<String> adjectives;
+
+    @Value("${twaddle.viewSize}")
+    private int viewSize;
 
     @GetMapping("/")
     public ModelAndView index()
@@ -61,6 +61,7 @@ public class WebController
 
         ModelAndView modelAndView = new ModelAndView("user-view");
         modelAndView.addObject("user", userOptional.get());
+        modelAndView.addObject("viewSize", viewSize);
 
         return modelAndView;
     }
