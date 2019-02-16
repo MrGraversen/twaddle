@@ -3,6 +3,7 @@ package io.graversen.twaddle.lib;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.time.format.DateTimeFormatter;
 import java.util.Collections;
 import java.util.List;
 import java.util.Random;
@@ -11,6 +12,7 @@ import java.util.stream.Collectors;
 public class Utils
 {
     private static final Random random = new Random();
+    private static final DateTimeFormatter readableDateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
 
     private static final String[] twaddles = new String[]{
             "My favourite number is: %s",
@@ -102,5 +104,10 @@ public class Utils
     public static String capitalize(String string)
     {
         return string.substring(0, 1).toUpperCase() + string.substring(1);
+    }
+
+    public static DateTimeFormatter readableTimeFormatter()
+    {
+        return readableDateTimeFormatter;
     }
 }

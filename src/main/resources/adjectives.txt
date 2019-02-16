@@ -471,7 +471,6 @@ unable
 rural
 initial
 substantial
-christian
 bright
 average
 leading
@@ -680,7 +679,6 @@ socialist
 widespread
 confident
 straight
-catholic
 proud
 numerous
 opposite
@@ -1131,7 +1129,6 @@ sound
 protective
 fortunate
 slim
-islamic
 defensive
 divine
 stuck

@@ -8,4 +8,6 @@ import org.springframework.data.elasticsearch.repository.ElasticsearchRepository
 public interface ITwaddleRepository extends ElasticsearchRepository<Twaddle, String>
 {
     Page<Twaddle> findByUserId(String userId, Pageable pageable);
+
+    long countByUserId(String userId);
 }

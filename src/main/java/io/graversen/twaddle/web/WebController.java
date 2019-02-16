@@ -2,6 +2,7 @@ package io.graversen.twaddle.web;
 
 import io.graversen.twaddle.data.document.Twaddle;
 import io.graversen.twaddle.data.entity.User;
+import io.graversen.twaddle.data.model.UserModel;
 import io.graversen.twaddle.data.repository.elastic.ITwaddleRepository;
 import io.graversen.twaddle.data.repository.jpa.IUserRepository;
 import io.graversen.twaddle.lib.Utils;
@@ -14,7 +15,10 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.servlet.ModelAndView;
 
+import java.util.List;
 import java.util.Optional;
+import java.util.function.Function;
+import java.util.stream.Collectors;
 
 @Controller
 @RequiredArgsConstructor
@@ -22,12 +26,18 @@ public class WebController
 {
     private final IUserRepository userRepository;
     private final ITwaddleRepository twaddleRepository;
+    private final List<String> adjectives;
 
     @GetMapping("/")
     public ModelAndView index()
     {
+        final List<UserModel> userModels = userRepository.findAll()
+                .stream()
+                .map(mapUserModel())
+                .collect(Collectors.toList());
+
         ModelAndView modelAndView = new ModelAndView("index");
-        modelAndView.addObject("users", userRepository.findAll());
+        modelAndView.addObject("users", userModels);
 
         return modelAndView;
     }
@@ -48,8 +58,7 @@ public class WebController
         }
 
         final long start = System.currentTimeMillis();
-        final Page<Twaddle> twaddles =
-                twaddleRepository.findByUserId(userId, PageRequest.of(0, 15, Sort.by(Sort.Direction.DESC, "createdAt")));
+        final Page<Twaddle> twaddles = twaddleRepository.findByUserId(userId, PageRequest.of(0, 15, Sort.by(Sort.Direction.DESC, "createdAt")));
         final long latency = System.currentTimeMillis() - start;
 
         ModelAndView modelAndView = new ModelAndView("user");
@@ -58,5 +67,21 @@ public class WebController
         modelAndView.addObject("latency", latency);
 
         return modelAndView;
+    }
+
+    private Function<User, UserModel> mapUserModel()
+    {
+        return user ->
+        {
+            final long twaddles = twaddleRepository.countByUserId(user.getUserId());
+
+            return new UserModel(
+                    user.getUserId(),
+                    user.getUsername(),
+                    Utils.readableTimeFormatter().format(user.getCreatedAt()),
+                    Utils.randomOf(adjectives),
+                    twaddles
+            );
+        };
     }
 }
