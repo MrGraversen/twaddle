@@ -98,7 +98,7 @@ public class Utils
 
     public static String randomUsername(List<String> animals, List<String> adjectives)
     {
-        return String.format("%s_%s", randomOf(adjectives), randomOf(animals)).toLowerCase();
+        return String.format("%s_%s", randomOf(adjectives), randomOf(animals)).replaceAll("\\s", "").toLowerCase();
     }
 
     public static String capitalize(String string)
