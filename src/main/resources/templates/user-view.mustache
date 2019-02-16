@@ -1,0 +1,35 @@
+{{>header}}
+
+<main role="main" class="container">
+    <h1 class="mt-5 display-4">{{user.username}}</h1>
+    <p class="lead">Read the musings of {{user.username}}.</p>
+
+    <div class="row mt-5 justify-content-center">
+        {{>twaddle}}
+    </div>
+</main>
+
+<script>
+    const userId = '{{user.userId}}';
+    const twaddlesUrl = `/api/users/${userId}/twaddles`;
+    const twaddlesStreamUrl = `/api/users/${userId}/twaddles/stream`;
+
+    $(document).ready(function () {
+        $.get(twaddlesUrl).done(onTwaddles);
+
+        // const source = new EventSource(`/api/users/${userId}/stream`);
+        // source.onmessage = function (event) {
+        //
+        // };
+
+        function onTwaddles(data) {
+            data.twaddles.forEach(populateTwaddle);
+        }
+
+        function populateTwaddle(data) {
+            console.log(data);
+        }
+    });
+</script>
+
+{{>footer}}

@@ -59,14 +59,8 @@ public class WebController
             return new ModelAndView("redirect:/");
         }
 
-        final long start = System.currentTimeMillis();
-        final Page<Twaddle> twaddles = twaddleRepository.findByUserId(userId, PageRequest.of(0, 15, Sort.by(Sort.Direction.DESC, "createdAt")));
-        final long latency = System.currentTimeMillis() - start;
-
-        ModelAndView modelAndView = new ModelAndView("user");
-        modelAndView.addObject("twaddles", twaddles);
+        ModelAndView modelAndView = new ModelAndView("user-view");
         modelAndView.addObject("user", userOptional.get());
-        modelAndView.addObject("latency", latency);
 
         return modelAndView;
     }
