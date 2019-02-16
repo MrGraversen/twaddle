@@ -4,7 +4,8 @@ spring:
   mvc:
     async:
       request-timeout: 3600000
-  thymeleaf:
+  mustache:
+    expose-request-attributes: true
     cache: false
   h2:
     console:
