@@ -4,14 +4,16 @@
 
     <section class="jumbotron text-center">
         <div class="container">
-            <h1 class="jumbotron-heading">Twaddle</h1>
+            <h1 class="jumbotron-heading display-4">Twaddle</h1>
             <p class="lead text-muted">Like Twitter, but worse!</p>
         </div>
     </section>
 
     <div class="container">
         {{#users}}
-            {{>user}}
+            <div class="row justify-content-center">
+                {{>user}}
+            </div>
         {{/users}}
     </div>
 
