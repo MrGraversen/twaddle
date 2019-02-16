@@ -23,7 +23,11 @@ public class Utils
             "We need more %s people in the world...",
             "Could %s be my lucky number? My %s seems to think so",
             "During the day, I felt somewhat %s",
-            "Only %s days until I see my %s again!"
+            "Only %s days until I see my %s again!",
+            "Visiting %s in %d days!",
+            "I'm in %s. Any %s guys around?",
+            "My favorite color is %s",
+            "Why did my %s turn %s?!"
     };
 
     private Utils()
@@ -44,9 +48,9 @@ public class Utils
         }
     }
 
-    public static String randomTwaddle(List<String> animals, List<String> adjectives)
+    public static String randomTwaddle(List<String> animals, List<String> adjectives, List<String> cities, List<String> colors)
     {
-        final int n = random.nextInt(11);
+        final int n = random.nextInt(15);
 
         switch (n)
         {
@@ -72,6 +76,14 @@ public class Utils
                 return String.format(twaddles[9], randomOf(adjectives));
             case 10:
                 return String.format(twaddles[10], random.nextInt(30), randomOf(animals));
+            case 11:
+                return String.format(twaddles[11], randomOf(cities), random.nextInt(30));
+            case 12:
+                return String.format(twaddles[12], randomOf(cities), randomOf(adjectives));
+            case 13:
+                return String.format(twaddles[13], randomOf(colors));
+            case 14:
+                return String.format(twaddles[14], randomOf(animals), randomOf(colors));
             default:
                 return "I don't know what to say";
         }
@@ -84,6 +96,11 @@ public class Utils
 
     public static String randomUsername(List<String> animals, List<String> adjectives)
     {
-        return String.format("%s_%s", randomOf(adjectives), randomOf(animals));
+        return String.format("%s_%s", randomOf(adjectives), randomOf(animals)).toLowerCase();
+    }
+
+    public static String capitalize(String string)
+    {
+        return string.substring(0, 1).toUpperCase() + string.substring(1);
     }
 }

@@ -19,6 +19,7 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 
 import java.util.List;
 import java.util.UUID;
+import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 @Configuration
@@ -42,22 +43,20 @@ public class ApplicationConfig implements ApplicationListener<ApplicationReadyEv
         userRepository.deleteAll();
 
         final User userMartin = userRepository.save(new User("MARTIN", "MARTIN"));
-        userRepository.save(new User("STEFFEN", "STEFFEN"));
-        userRepository.save(new User("LASSE", "LASSE"));
 
-        IntStream.range(0, NUMBER_OF_RANDOM_USERS).forEach(
-                x -> userRepository.save(new User(UUID.randomUUID().toString(), Utils.randomUsername(animals(), adjectives())))
-        );
+        IntStream.range(0, NUMBER_OF_RANDOM_USERS)
+                .forEach(x -> userRepository.save(new User(UUID.randomUUID().toString(), Utils.randomUsername(animals(), adjectives()))));
 
         IntStream.range(0, 10).forEach(x ->
         {
-            final Twaddle twaddle = new Twaddle(userMartin.getUserId(), Utils.randomTwaddle(animals(), adjectives()));
+            final Twaddle twaddle = new Twaddle(userMartin.getUserId(), Utils.randomTwaddle(animals(), adjectives(), cities(), colors()));
             twaddleRepository.save(twaddle);
         });
     }
 
     @Bean
-    public AsyncTaskExecutor asyncTaskExecutor() {
+    public AsyncTaskExecutor asyncTaskExecutor()
+    {
         return new SimpleAsyncTaskExecutor();
     }
 
@@ -71,5 +70,17 @@ public class ApplicationConfig implements ApplicationListener<ApplicationReadyEv
     public List<String> animals()
     {
         return Utils.resourceLines("animals.txt");
+    }
+
+    @Bean
+    public List<String> colors()
+    {
+        return Utils.resourceLines("colors.txt");
+    }
+
+    @Bean
+    public List<String> cities()
+    {
+        return Utils.resourceLines("cities.txt").stream().map(Utils::capitalize).collect(Collectors.toList());
     }
 }

@@ -31,6 +31,8 @@ public class TwaddlesService
     private final TwaddleChannels twaddleChannels;
     private final List<String> adjectives;
     private final List<String> animals;
+    private final List<String> colors;
+    private final List<String> cities;
 
     private final Random random = new Random();
     private final ConcurrentMap<String, List<SseEmitter>> twaddleSubscriptions = new ConcurrentHashMap<>();
@@ -47,16 +49,9 @@ public class TwaddlesService
 
         users.forEach(user ->
         {
-            if ("MARTIN".equals(user.getUserId()))
-            {
-                final Twaddle twaddle = new Twaddle(user.getUserId(), Utils.randomTwaddle(animals, adjectives));
-                twaddleChannels.twaddles().send(MessageBuilder.withPayload(twaddle).build());
-                return;
-            }
-
             if (random.nextBoolean())
             {
-                final Twaddle twaddle = new Twaddle(user.getUserId(), Utils.randomTwaddle(animals, adjectives));
+                final Twaddle twaddle = new Twaddle(user.getUserId(), Utils.randomTwaddle(animals, adjectives, cities, colors));
                 twaddleChannels.twaddles().send(MessageBuilder.withPayload(twaddle).build());
             }
         });
