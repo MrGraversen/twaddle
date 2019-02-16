@@ -35,6 +35,7 @@
             let twaddleElementClone = twaddleElement.clone();
             twaddleElementClone.find('#twaddle-text').text(data.text);
             twaddleElementClone.find('#twaddle-created-at').text(data.createdAt);
+            twaddleElementClone.removeAttr('hidden');
 
             twaddleContainer.prepend(twaddleElementClone);
 

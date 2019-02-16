@@ -3,6 +3,7 @@ package io.graversen.twaddle.service;
 import io.graversen.twaddle.config.TwaddleChannels;
 import io.graversen.twaddle.data.document.Twaddle;
 import io.graversen.twaddle.data.entity.User;
+import io.graversen.twaddle.data.model.TwaddleModel;
 import io.graversen.twaddle.data.repository.elastic.ITwaddleRepository;
 import io.graversen.twaddle.data.repository.jpa.IUserRepository;
 import io.graversen.twaddle.lib.Utils;
@@ -98,7 +99,8 @@ public class TwaddlesService
         {
             try
             {
-                sseEmitter.send(twaddle);
+                final TwaddleModel twaddleModel = Utils.mapTwaddle().apply(twaddle);
+                sseEmitter.send(twaddleModel);
             }
             catch (IOException e)
             {

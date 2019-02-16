@@ -1,5 +1,8 @@
 package io.graversen.twaddle.lib;
 
+import io.graversen.twaddle.data.document.Twaddle;
+import io.graversen.twaddle.data.model.TwaddleModel;
+
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -7,6 +10,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.Collections;
 import java.util.List;
 import java.util.Random;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 
 public class Utils
@@ -114,5 +118,10 @@ public class Utils
     public static List<String> defaultUsers()
     {
         return List.of("MARTIN", "STEFFEN");
+    }
+
+    public static Function<Twaddle, TwaddleModel> mapTwaddle()
+    {
+        return twaddle -> new TwaddleModel(twaddle.getText(), Utils.readableTimeFormatter().format(twaddle.getCreatedAt()));
     }
 }

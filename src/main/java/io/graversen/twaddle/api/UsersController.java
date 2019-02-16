@@ -45,7 +45,7 @@ public class UsersController
         final Page<Twaddle> twaddles = twaddleRepository.findByUserIdOrderByCreatedAtDesc(user.getUserId(), defaultTwaddlesPage());
 
         return ResponseEntity.ok(
-                new TwaddlesModel(twaddles.map(mapTwaddle()).getContent())
+                new TwaddlesModel(twaddles.map(Utils.mapTwaddle()).getContent())
         );
     }
 
@@ -71,10 +71,5 @@ public class UsersController
     private PageRequest defaultTwaddlesPage()
     {
         return PageRequest.of(0, viewSize);
-    }
-
-    private Function<Twaddle, TwaddleModel> mapTwaddle()
-    {
-        return twaddle -> new TwaddleModel(twaddle.getText(), Utils.readableTimeFormatter().format(twaddle.getCreatedAt()));
     }
 }
