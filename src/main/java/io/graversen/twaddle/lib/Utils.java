@@ -1,5 +1,6 @@
 package io.graversen.twaddle.lib;
 
+import io.graversen.twaddle.data.document.Hashtag;
 import io.graversen.twaddle.data.document.Twaddle;
 import io.graversen.twaddle.data.model.TwaddleModel;
 
@@ -7,10 +8,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.Random;
+import java.util.*;
 import java.util.function.Function;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -58,45 +56,67 @@ public class Utils
         }
     }
 
-    public static String randomTwaddle(List<String> animals, List<String> adjectives, List<String> cities, List<String> colors)
+    public static Twaddle randomTwaddle(String userId, List<String> animals, List<String> adjectives, List<String> cities, List<String> colors)
     {
         final int n = random.nextInt(15);
+        String text = "";
 
         switch (n)
         {
             case 0:
-                return String.format(twaddles[0], random.nextInt(10000));
+                text = String.format(twaddles[0], random.nextInt(10000));
+                break;
             case 1:
-                return String.format(twaddles[1], randomOf(adjectives));
+                text = String.format(twaddles[1], randomOf(adjectives));
+                break;
             case 2:
-                return String.format(twaddles[2], randomOf(animals));
+                text = String.format(twaddles[2], randomOf(animals));
+                break;
             case 3:
-                return String.format(twaddles[3], randomOf(animals), randomOf(adjectives));
+                text = String.format(twaddles[3], randomOf(animals), randomOf(adjectives));
+                break;
             case 4:
-                return String.format(twaddles[4], 1 + random.nextInt(10), randomOf(adjectives), randomOf(animals));
+                text = String.format(twaddles[4], 1 + random.nextInt(10), randomOf(adjectives), randomOf(animals));
+                break;
             case 5:
-                return String.format(twaddles[5], 1 + random.nextInt(6));
+                text = String.format(twaddles[5], 1 + random.nextInt(6));
+                break;
             case 6:
-                return String.format(twaddles[6], random.nextInt(1000), randomOf(adjectives));
+                text = String.format(twaddles[6], random.nextInt(1000), randomOf(adjectives));
+                break;
             case 7:
-                return String.format(twaddles[7], randomOf(adjectives));
+                text = String.format(twaddles[7], randomOf(adjectives));
+                break;
             case 8:
-                return String.format(twaddles[8], random.nextInt(1000), randomOf(animals));
+                text = String.format(twaddles[8], random.nextInt(1000), randomOf(animals));
+                break;
             case 9:
-                return String.format(twaddles[9], randomOf(adjectives));
+                text = String.format(twaddles[9], randomOf(adjectives));
+                break;
             case 10:
-                return String.format(twaddles[10], random.nextInt(30), randomOf(animals));
+                text = String.format(twaddles[10], random.nextInt(30), randomOf(animals));
+                break;
             case 11:
-                return String.format(twaddles[11], randomOf(cities), random.nextInt(30));
+                text = String.format(twaddles[11], randomOf(cities), random.nextInt(30));
+                break;
             case 12:
-                return String.format(twaddles[12], randomOf(cities), randomOf(adjectives));
+                text = String.format(twaddles[12], randomOf(cities), randomOf(adjectives));
+                break;
             case 13:
-                return String.format(twaddles[13], randomOf(colors));
+                text = String.format(twaddles[13], randomOf(colors));
+                break;
             case 14:
-                return String.format(twaddles[14], randomOf(animals), randomOf(colors));
+                text = String.format(twaddles[14], randomOf(animals), randomOf(colors));
+                break;
             default:
-                return "I don't know what to say";
+                text = "I don't know what to say";
+                break;
         }
+
+        final Set<String> hashtags = randomHashtags(adjectives);
+        text = appendHashtags(text, hashtags);
+
+        return new Twaddle(userId, text, hashtags);
     }
 
     public static <T> T randomOf(List<T> list)
@@ -140,5 +160,28 @@ public class Utils
         }
 
         return hashtags;
+    }
+
+    public static Set<String> randomHashtags(List<String> adjectives)
+    {
+        final Set<String> generatedHashtags = new HashSet<>();
+
+        if (random.nextBoolean())
+        {
+            for (int i = 0; i < 3; i++)
+            {
+                if (random.nextBoolean())
+                {
+                    generatedHashtags.add("#".concat(Utils.randomOf(adjectives)));
+                }
+            }
+        }
+
+        return generatedHashtags;
+    }
+
+    public static String appendHashtags(String text, Set<String> hashtags)
+    {
+        return hashtags.isEmpty() ? text : text.concat(" ").concat(String.join(" ", hashtags));
     }
 }

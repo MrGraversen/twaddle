@@ -1,9 +1,11 @@
 package io.graversen.twaddle.service;
 
 import io.graversen.twaddle.config.TwaddleChannels;
+import io.graversen.twaddle.data.document.Hashtag;
 import io.graversen.twaddle.data.document.Twaddle;
 import io.graversen.twaddle.data.entity.User;
 import io.graversen.twaddle.data.model.TwaddleModel;
+import io.graversen.twaddle.data.repository.elastic.IHashTagRepository;
 import io.graversen.twaddle.data.repository.elastic.ITwaddleRepository;
 import io.graversen.twaddle.data.repository.jpa.IUserRepository;
 import io.graversen.twaddle.lib.Utils;
@@ -29,6 +31,7 @@ public class TwaddlesService
 {
     private final IUserRepository userRepository;
     private final ITwaddleRepository twaddleRepository;
+    private final IHashTagRepository hashTagRepository;
     private final TwaddleChannels twaddleChannels;
     private final List<String> adjectives;
     private final List<String> animals;
@@ -53,15 +56,9 @@ public class TwaddlesService
 
         users.forEach(user ->
         {
-            final Twaddle twaddle = new Twaddle(user.getUserId(), Utils.randomTwaddle(animals, adjectives, cities, colors));
+            final Twaddle twaddle = Utils.randomTwaddle(user.getUserId(), animals, adjectives, cities, colors);
 
-            if (Utils.defaultUsers().contains(user.getUserId()))
-            {
-                twaddleChannels.twaddles().send(MessageBuilder.withPayload(twaddle).build());
-                return;
-            }
-
-            if (random.nextBoolean())
+            if (Utils.defaultUsers().contains(user.getUserId()) || random.nextBoolean())
             {
                 twaddleChannels.twaddles().send(MessageBuilder.withPayload(twaddle).build());
             }
@@ -78,6 +75,7 @@ public class TwaddlesService
     @StreamListener("twaddles")
     public void saveTwaddle(Twaddle twaddle)
     {
+        twaddle.getHashtags().forEach(s -> hashTagRepository.save(new Hashtag(twaddle.getUserId(), s)));
         twaddleRepository.save(twaddle);
     }
 

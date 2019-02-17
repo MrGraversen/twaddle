@@ -38,8 +38,8 @@ public class ApplicationConfig implements ApplicationListener<ApplicationReadyEv
     @Override
     public void onApplicationEvent(ApplicationReadyEvent applicationReadyEvent)
     {
-//        twaddleRepository.deleteAll();
-//        hashTagRepository.deleteAll();
+        twaddleRepository.deleteAll();
+        hashTagRepository.deleteAll();
         userRepository.deleteAll();
 
         Utils.defaultUsers().forEach(user -> userRepository.save(new User(user, user)));

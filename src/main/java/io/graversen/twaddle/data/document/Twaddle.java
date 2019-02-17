@@ -1,17 +1,13 @@
 package io.graversen.twaddle.data.document;
 
-import lombok.Data;
-import lombok.NoArgsConstructor;
-import lombok.NonNull;
-import lombok.RequiredArgsConstructor;
+import lombok.*;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.elasticsearch.annotations.Document;
 import org.springframework.data.elasticsearch.annotations.Field;
 import org.springframework.data.elasticsearch.annotations.FieldType;
 
 import java.time.LocalDateTime;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 
 @Data
 @RequiredArgsConstructor
@@ -31,6 +27,6 @@ public class Twaddle
     @NonNull
     private String text;
 
-    @Field(type = FieldType.Nested)
-    private List<Hashtag> hashtags;
+    @NonNull
+    private Set<String> hashtags;
 }
