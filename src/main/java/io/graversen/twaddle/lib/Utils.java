@@ -7,16 +7,20 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Random;
 import java.util.function.Function;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 public class Utils
 {
     private static final Random random = new Random();
     private static final DateTimeFormatter readableDateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+    private static final Pattern hashtagPattern = Pattern.compile(".*?\\s(#\\w+).*?");
 
     private static final String[] twaddles = new String[]{
             "My favourite number is: %s",
@@ -123,5 +127,18 @@ public class Utils
     public static Function<Twaddle, TwaddleModel> mapTwaddle()
     {
         return twaddle -> new TwaddleModel(twaddle.getText(), Utils.readableTimeFormatter().format(twaddle.getCreatedAt()));
+    }
+
+    public static List<String> extractHashtags(String text)
+    {
+        final List<String> hashtags = new ArrayList<>();
+        final Matcher matcher = hashtagPattern.matcher(text);
+
+        while (matcher.find())
+        {
+            hashtags.add(matcher.group(1).replaceAll("#", ""));
+        }
+
+        return hashtags;
     }
 }
