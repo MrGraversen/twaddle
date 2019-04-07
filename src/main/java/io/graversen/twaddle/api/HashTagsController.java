@@ -28,7 +28,7 @@ public class HashTagsController
     @GetMapping("{hashTag}")
     public ResponseEntity<TwaddlesModel> twaddlesByHashTag(@PathVariable String hashTag)
     {
-        final List<TwaddleModel> twaddles = twaddleRepository.findByHashTags(hashTag, PageRequest.of(0, 50))
+        final List<TwaddleModel> twaddles = twaddleRepository.findByHashTagsOrderByCreatedAtDesc(hashTag, PageRequest.of(0, 50))
                 .map(Utils.mapTwaddle())
                 .getContent();
 
