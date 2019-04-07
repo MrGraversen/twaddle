@@ -35,7 +35,7 @@
 
         function populateTwaddle(data, highlight) {
             let twaddleElementClone = twaddleElement.clone();
-            twaddleElementClone.find('#twaddle-text').text(data.text);
+            twaddleElementClone.find('#twaddle-text').html(twaddleAndLinkifiedHashTags(data.text));
             twaddleElementClone.find('#twaddle-created-at').html('Submitted by ' + userLink(data.username, data.userId) + ', at ' + data.createdAt);
             twaddleElementClone.removeAttr('hidden');
 
@@ -56,6 +56,10 @@
 
         function userLink(username, userId) {
             return `<a href="/users/${userId}">${username}</a>`;
+        }
+
+        function twaddleAndLinkifiedHashTags(text) {
+            return text.replace(/#(\S*)/g,'<a href="/twaddles/$1">#$1</a>');
         }
     });
 </script>
