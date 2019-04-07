@@ -5,6 +5,8 @@ services:
   twaddle-kibana:
     container_name: twaddle-kibana
     image: docker.elastic.co/kibana/kibana:6.2.4
+    environment:
+      - ELASTICSEARCH_URL=http://twaddle-elasticsearch:9200
     ports:
       - 5601:5601
     depends_on:
@@ -16,8 +18,6 @@ services:
     environment:
       - discovery.type=single-node
       - xpack.security.enabled=false
-      - transport.host=0.0.0.0
-      - http.host=0.0.0.0
     ports:
       - 9200:9200
       - 9300:9300
