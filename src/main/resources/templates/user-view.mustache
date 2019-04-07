@@ -36,7 +36,7 @@
         function populateTwaddle(data, highlight) {
             let twaddleElementClone = twaddleElement.clone();
             twaddleElementClone.find('#twaddle-text').text(data.text);
-            twaddleElementClone.find('#twaddle-created-at').text('Submitted by ' + data.username + ', at ' + data.createdAt);
+            twaddleElementClone.find('#twaddle-created-at').html('Submitted by ' + userLink(data.username, data.userId) + ', at ' + data.createdAt);
             twaddleElementClone.removeAttr('hidden');
 
             twaddleContainer.prepend(twaddleElementClone);
@@ -52,6 +52,10 @@
             if (twaddleContainer.children().length > viewSize) {
                 twaddleContainer.children('#a-twaddle').last().remove();
             }
+        }
+
+        function userLink(username, userId) {
+            return `<a href="/users/${userId}">${username}</a>`;
         }
     });
 </script>

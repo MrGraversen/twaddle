@@ -2,8 +2,8 @@
 
 <main role="main" class="container">
     <div class="container">
-        <h1 class="mt-5 display-4">{{hashTag}}</h1>
-        <p class="lead">What are people saying about {{hashTag}}? Probably not much of value.</p>
+        <h1 class="mt-5 display-4">#{{hashTag}}</h1>
+        <p class="lead">What are twaddlers saying about <b>{{hashTag}}</b>? Probably nothing of value.</p>
     </div>
 
     <div class="row mt-5 justify-content-center" id="twaddle-container"></div>
@@ -27,10 +27,14 @@
         function populateTwaddle(data) {
             let twaddleElementClone = twaddleElement.clone();
             twaddleElementClone.find('#twaddle-text').text(data.text);
-            twaddleElementClone.find('#twaddle-created-at').text('Submitted by ' + data.username + ', at ' + data.createdAt);
+            twaddleElementClone.find('#twaddle-created-at').html('Submitted by ' + userLink(data.username, data.userId) + ', at ' + data.createdAt);
             twaddleElementClone.removeAttr('hidden');
 
             twaddleContainer.prepend(twaddleElementClone);
+        }
+
+        function userLink(username, userId) {
+            return `<a href="/users/${userId}">${username}</a>`;
         }
     });
 </script>
