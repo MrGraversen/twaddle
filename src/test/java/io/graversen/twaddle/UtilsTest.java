@@ -10,15 +10,15 @@ public class UtilsTest
     @Test
     public void testExtractHashtags()
     {
-        final List<String> hashtags1 = Utils.extractHashtags("Hello");
+        final List<String> hashtags1 = Utils.extractHashTags("Hello");
         assert hashtags1.isEmpty();
 
-        final List<String> hashtags2 = Utils.extractHashtags("Hello #World");
+        final List<String> hashtags2 = Utils.extractHashTags("Hello #World");
         assert !hashtags2.isEmpty();
         assert hashtags2.size() == 1;
         assert hashtags2.get(0).equals("World");
 
-        final List<String> hashtags3 = Utils.extractHashtags("Hello #World, it is nice and #sunny today");
+        final List<String> hashtags3 = Utils.extractHashTags("Hello #World, it is nice and #sunny today");
         assert !hashtags3.isEmpty();
         assert hashtags3.size() == 2;
         assert hashtags3.get(0).equals("World");

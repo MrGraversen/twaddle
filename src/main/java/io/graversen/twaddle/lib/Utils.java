@@ -112,7 +112,7 @@ public class Utils
                 break;
         }
 
-        final Set<String> hashtags = randomHashtags(adjectives);
+        final Set<String> hashtags = randomHashTags(adjectives);
         text = appendHashtags(text, hashtags);
 
         return new Twaddle(userId, text, hashtags);
@@ -150,7 +150,7 @@ public class Utils
         );
     }
 
-    public static List<String> extractHashtags(String text)
+    public static List<String> extractHashTags(String text)
     {
         final List<String> hashtags = new ArrayList<>();
         final Matcher matcher = hashTagPattern.matcher(text);
@@ -163,7 +163,7 @@ public class Utils
         return hashtags;
     }
 
-    public static Set<String> randomHashtags(List<String> adjectives)
+    public static Set<String> randomHashTags(List<String> adjectives)
     {
         final Set<String> generatedHashtags = new HashSet<>();
 

@@ -1,6 +1,5 @@
 package io.graversen.twaddle.config;
 
-import io.graversen.twaddle.data.document.Twaddle;
 import io.graversen.twaddle.data.entity.User;
 import io.graversen.twaddle.data.repository.elastic.IHashTagRepository;
 import io.graversen.twaddle.data.repository.elastic.ITwaddleRepository;
