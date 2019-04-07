@@ -19,7 +19,7 @@ public class UserService
 
     public List<User> allUsers()
     {
-        if (users == null || userCache == null)
+        if (users == null || users.isEmpty())
         {
             users = Collections.unmodifiableList(userRepository.findAll());
             userCache = users.stream().collect(Collectors.toUnmodifiableMap(User::getUserId, user -> user));

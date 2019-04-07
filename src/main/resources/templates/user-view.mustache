@@ -36,7 +36,7 @@
         function populateTwaddle(data, highlight) {
             let twaddleElementClone = twaddleElement.clone();
             twaddleElementClone.find('#twaddle-text').text(data.text);
-            twaddleElementClone.find('#twaddle-created-at').text('Submitted ' + data.createdAt);
+            twaddleElementClone.find('#twaddle-created-at').text('Submitted by ' + data.username + ', at ' + data.createdAt);
             twaddleElementClone.removeAttr('hidden');
 
             twaddleContainer.prepend(twaddleElementClone);

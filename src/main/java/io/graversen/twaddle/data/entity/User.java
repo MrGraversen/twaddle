@@ -9,10 +9,10 @@ import javax.persistence.*;
 import java.time.LocalDateTime;
 
 @Data
-@RequiredArgsConstructor
-@NoArgsConstructor
 @Entity
 @Table(name = "user")
+@NoArgsConstructor
+@RequiredArgsConstructor
 public class User
 {
     @Id

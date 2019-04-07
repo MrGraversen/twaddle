@@ -7,7 +7,6 @@ import io.graversen.twaddle.data.entity.User;
 import io.graversen.twaddle.data.model.TwaddleModel;
 import io.graversen.twaddle.data.repository.elastic.IHashTagRepository;
 import io.graversen.twaddle.data.repository.elastic.ITwaddleRepository;
-import io.graversen.twaddle.data.repository.jpa.IUserRepository;
 import io.graversen.twaddle.lib.Utils;
 import lombok.RequiredArgsConstructor;
 import org.springframework.cloud.stream.annotation.StreamListener;
@@ -29,7 +28,7 @@ import java.util.function.Consumer;
 @RequiredArgsConstructor
 public class TwaddlesService
 {
-    private final IUserRepository userRepository;
+    private final UserService userService;
     private final ITwaddleRepository twaddleRepository;
     private final IHashTagRepository hashTagRepository;
     private final TwaddleChannels twaddleChannels;
@@ -41,20 +40,13 @@ public class TwaddlesService
     private final Random random = new Random();
     private final ConcurrentMap<String, List<SseEmitter>> twaddleSubscriptions = new ConcurrentHashMap<>();
 
-    private List<User> users = null;
     private long usersUpdated = System.currentTimeMillis();
     private long userUpdateInterval = 30000L;
 
     @Scheduled(fixedRate = 2000L, initialDelay = 2000L)
     public void generateRandomTwaddles()
     {
-        if (users == null || (System.currentTimeMillis() > (usersUpdated + userUpdateInterval)))
-        {
-            users = Collections.synchronizedList(userRepository.findAll());
-            usersUpdated = System.currentTimeMillis();
-        }
-
-        users.forEach(user ->
+        userService.allUsers().forEach(user ->
         {
             final Twaddle twaddle = Utils.randomTwaddle(user.getUserId(), animals, adjectives, cities, colors);
 
@@ -69,13 +61,14 @@ public class TwaddlesService
     public void emitTwaddle(Twaddle twaddle)
     {
         final List<SseEmitter> sseEmitters = twaddleSubscriptions.getOrDefault(twaddle.getUserId(), Collections.emptyList());
-        sseEmitters.forEach(doEmitTwaddle(twaddle));
+        final User user = userService.getUser(twaddle.getUserId()).orElse(new User("nobody", "nobody"));
+        sseEmitters.forEach(doEmitTwaddle(twaddle, user));
     }
 
     @StreamListener("twaddles")
     public void saveTwaddle(Twaddle twaddle)
     {
-        twaddle.getHashtags().forEach(s -> hashTagRepository.save(new Hashtag(twaddle.getUserId(), s)));
+        twaddle.getHashTags().forEach(s -> hashTagRepository.save(new Hashtag(twaddle.getUserId(), s)));
         twaddleRepository.save(twaddle);
     }
 
@@ -91,13 +84,14 @@ public class TwaddlesService
         sseEmitters.remove(sseEmitter);
     }
 
-    private Consumer<SseEmitter> doEmitTwaddle(Twaddle twaddle)
+    private Consumer<SseEmitter> doEmitTwaddle(Twaddle twaddle, User user)
     {
         return sseEmitter ->
         {
             try
             {
                 final TwaddleModel twaddleModel = Utils.mapTwaddle().apply(twaddle);
+                twaddleModel.setUsername(user.getUsername());
                 sseEmitter.send(twaddleModel);
             }
             catch (IOException e)
