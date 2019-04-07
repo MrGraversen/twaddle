@@ -28,13 +28,3 @@ services:
     ports:
       - 5672:5672
       - 15672:15672
-
-  twaddle-app:
-    container_name: twaddle-app
-    image: twaddle/twaddle-app
-    ports:
-      - 8080:8080
-    depends_on:
-      - twaddle-elasticsearch
-      - twaddle-rabbitmq
-    restart: on-failure

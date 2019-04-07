@@ -3,6 +3,7 @@ package io.graversen.twaddle.lib;
 import io.graversen.twaddle.data.document.Twaddle;
 import io.graversen.twaddle.data.model.TwaddleModel;
 
+import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -45,8 +46,12 @@ public class Utils
     {
         try
         {
-            final Path resourcePath = Paths.get(Utils.class.getClassLoader().getResource(resourceName).toURI());
-            return Files.readAllLines(resourcePath).stream().map(String::trim).collect(Collectors.toUnmodifiableList());
+            final InputStream resourceAsStream = Utils.class.getClassLoader().getResourceAsStream(resourceName);
+            return new Scanner(resourceAsStream)
+                    .useDelimiter("\n")
+                    .tokens()
+                    .map(String::trim)
+                    .collect(Collectors.toList());
         }
         catch (Exception e)
         {
