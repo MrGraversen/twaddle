@@ -1,0 +1,36 @@
+{{>header}}
+
+<main role="main" class="container">
+    <div class="container">
+        <h1 class="mt-5 display-4">{{hashTag}}</h1>
+        <p class="lead">What are people saying about {{hashTag}}? Probably not much of value.</p>
+    </div>
+
+    <div class="row mt-5 justify-content-center" id="twaddle-container"></div>
+
+    {{>twaddle}}
+</main>
+
+<script>
+    const hashTag = '{{hashTag}}';
+    const twaddlesUrl = `/api/hashtags/${hashTag}`;
+    const twaddleElement = $('#a-twaddle');
+    const twaddleContainer = $('#twaddle-container');
+
+    $(document).ready(function () {
+        $.get(twaddlesUrl).done(onTwaddles);
+
+        function onTwaddles(data) {
+            data.twaddles.reverse().forEach(x => populateTwaddle(x, false));
+        }
+
+        function populateTwaddle(data) {
+            let twaddleElementClone = twaddleElement.clone();
+            twaddleElementClone.find('#twaddle-text').text(data.text);
+            twaddleElementClone.find('#twaddle-created-at').text('Submitted by ' + data.username + ', at ' + data.createdAt);
+            twaddleElementClone.removeAttr('hidden');
+
+            twaddleContainer.prepend(twaddleElementClone);
+        }
+    });
+</script>
