@@ -72,6 +72,13 @@ public class WebController
         return modelAndView;
     }
 
+    @GetMapping("/twaddles")
+    public ModelAndView twaddlesByRandomHashTag()
+    {
+        final String randomHashTag = Utils.randomOf(adjectives);
+        return new ModelAndView(String.format("redirect:/twaddles/%s", randomHashTag));
+    }
+
     @GetMapping("/twaddles/{hashTag}")
     public ModelAndView twaddlesByHashTag(@PathVariable String hashTag)
     {
