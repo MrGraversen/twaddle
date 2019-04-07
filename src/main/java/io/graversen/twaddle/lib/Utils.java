@@ -1,6 +1,5 @@
 package io.graversen.twaddle.lib;
 
-import io.graversen.twaddle.data.document.Hashtag;
 import io.graversen.twaddle.data.document.Twaddle;
 import io.graversen.twaddle.data.model.TwaddleModel;
 
@@ -18,7 +17,7 @@ public class Utils
 {
     private static final Random random = new Random();
     private static final DateTimeFormatter readableDateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
-    private static final Pattern hashtagPattern = Pattern.compile(".*?\\s(#\\w+).*?");
+    private static final Pattern hashTagPattern = Pattern.compile(".*?\\s(#\\w+).*?");
 
     private static final String[] twaddles = new String[]{
             "My favourite number is: %s",
@@ -152,7 +151,7 @@ public class Utils
     public static List<String> extractHashtags(String text)
     {
         final List<String> hashtags = new ArrayList<>();
-        final Matcher matcher = hashtagPattern.matcher(text);
+        final Matcher matcher = hashTagPattern.matcher(text);
 
         while (matcher.find())
         {
