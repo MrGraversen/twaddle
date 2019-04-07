@@ -32,6 +32,7 @@ public class TwaddlesService
     private final ITwaddleRepository twaddleRepository;
     private final IHashTagRepository hashTagRepository;
     private final TwaddleChannels twaddleChannels;
+
     private final List<String> adjectives;
     private final List<String> animals;
     private final List<String> colors;
@@ -61,7 +62,7 @@ public class TwaddlesService
     public void emitTwaddle(Twaddle twaddle)
     {
         final List<SseEmitter> sseEmitters = twaddleSubscriptions.getOrDefault(twaddle.getUserId(), Collections.emptyList());
-        final User user = userService.getUser(twaddle.getUserId()).orElse(new User("nobody", "nobody"));
+        final User user = userService.getUser(twaddle.getUserId()).orElseGet(User::defaultUser);
         sseEmitters.forEach(doEmitTwaddle(twaddle, user));
     }
 

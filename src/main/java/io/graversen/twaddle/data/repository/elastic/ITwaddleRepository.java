@@ -9,5 +9,7 @@ public interface ITwaddleRepository extends ElasticsearchRepository<Twaddle, Str
 {
     Page<Twaddle> findByUserIdOrderByCreatedAtDesc(String userId, Pageable pageable);
 
+    Page<Twaddle> findByHashTags(String hashTag, Pageable pageable);
+
     long countByUserId(String userId);
 }

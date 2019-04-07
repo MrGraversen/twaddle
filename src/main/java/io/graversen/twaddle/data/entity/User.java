@@ -29,4 +29,9 @@ public class User
 
     @Column(name = "created_at")
     private LocalDateTime createdAt = LocalDateTime.now();
+
+    public static User defaultUser()
+    {
+        return new User("nobody", "nobody");
+    }
 }

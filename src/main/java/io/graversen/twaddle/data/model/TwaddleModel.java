@@ -6,6 +6,7 @@ import lombok.Data;
 public class TwaddleModel
 {
     private final String text;
+    private final String userId;
     private final String createdAt;
     private String username;
 }

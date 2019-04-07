@@ -1,12 +1,14 @@
 package io.graversen.twaddle.web;
 
 import io.graversen.twaddle.data.entity.User;
+import io.graversen.twaddle.data.model.TwaddleModel;
 import io.graversen.twaddle.data.model.UserModel;
 import io.graversen.twaddle.data.repository.elastic.ITwaddleRepository;
 import io.graversen.twaddle.data.repository.jpa.IUserRepository;
 import io.graversen.twaddle.lib.Utils;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -68,6 +70,15 @@ public class WebController
         ModelAndView modelAndView = new ModelAndView("user-view");
         modelAndView.addObject("user", userOptional.get());
         modelAndView.addObject("viewSize", viewSize);
+
+        return modelAndView;
+    }
+
+    @GetMapping("/twaddles/{hashTag}")
+    public ModelAndView twaddlesByHashTag(@PathVariable String hashTag)
+    {
+        ModelAndView modelAndView = new ModelAndView("twaddles-by-hashtag-view");
+        modelAndView.addObject("hashTag", hashTag);
 
         return modelAndView;
     }

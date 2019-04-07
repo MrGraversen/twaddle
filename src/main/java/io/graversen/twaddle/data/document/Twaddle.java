@@ -28,5 +28,5 @@ public class Twaddle
     private String text;
 
     @NonNull
-    private Set<String> hashtags;
+    private Set<String> hashTags;
 }

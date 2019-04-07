@@ -145,7 +145,9 @@ public class Utils
 
     public static Function<Twaddle, TwaddleModel> mapTwaddle()
     {
-        return twaddle -> new TwaddleModel(twaddle.getText(), Utils.readableTimeFormatter().format(twaddle.getCreatedAt()));
+        return twaddle -> new TwaddleModel(
+                twaddle.getText(), twaddle.getUserId(), Utils.readableTimeFormatter().format(twaddle.getCreatedAt())
+        );
     }
 
     public static List<String> extractHashtags(String text)
