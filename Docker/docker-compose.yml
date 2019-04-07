@@ -21,3 +21,10 @@ services:
     ports:
       - 9200:9200
       - 9300:9300
+
+  twaddle-rabbitmq:
+    container_name: twaddle-rabbitmq
+    image: rabbitmq:3-management
+    ports:
+      - 5672:5672
+      - 15672:15672
