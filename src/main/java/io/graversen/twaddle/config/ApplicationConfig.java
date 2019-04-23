@@ -6,6 +6,7 @@ import io.graversen.twaddle.data.repository.elastic.ITwaddleRepository;
 import io.graversen.twaddle.data.repository.jpa.IUserRepository;
 import io.graversen.twaddle.lib.Utils;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.context.event.ApplicationReadyEvent;
 import org.springframework.context.ApplicationListener;
 import org.springframework.context.annotation.Bean;
@@ -34,9 +35,14 @@ public class ApplicationConfig implements ApplicationListener<ApplicationReadyEv
     private final IHashTagRepository hashTagRepository;
     private final IUserRepository userRepository;
 
+    @Value("${twaddle.magicString}")
+    private String magicString;
+
     @Override
     public void onApplicationEvent(ApplicationReadyEvent applicationReadyEvent)
     {
+        System.out.println(String.format("----- %s -----", magicString));
+
         twaddleRepository.deleteAll();
         hashTagRepository.deleteAll();
         userRepository.deleteAll();

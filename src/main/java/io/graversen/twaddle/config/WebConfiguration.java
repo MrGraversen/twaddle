@@ -8,12 +8,12 @@ import org.springframework.http.converter.HttpMessageConverter;
 import org.springframework.http.converter.json.Jackson2ObjectMapperBuilder;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
 import org.springframework.web.bind.annotation.ControllerAdvice;
-import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 import java.util.List;
 
 @ControllerAdvice
-public class WebConfiguration extends WebMvcConfigurerAdapter
+public class WebConfiguration implements WebMvcConfigurer
 {
     @Override
     public void extendMessageConverters(List<HttpMessageConverter<?>> converters)
