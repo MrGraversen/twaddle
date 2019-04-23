@@ -11,6 +11,8 @@ services:
       - 5601:5601
     depends_on:
       - twaddle-elasticsearch
+    networks:
+      - twaddle-network
 
   twaddle-elasticsearch:
     container_name: twaddle-elasticsearch
@@ -18,9 +20,8 @@ services:
     environment:
       - discovery.type=single-node
       - xpack.security.enabled=false
-    ports:
-      - 9200:9200
-      - 9300:9300
+    networks:
+      - twaddle-network
 
   twaddle-rabbitmq:
     container_name: twaddle-rabbitmq
@@ -28,13 +29,26 @@ services:
     ports:
       - 5672:5672
       - 15672:15672
+    networks:
+      - twaddle-network
 
   twaddle-app:
     container_name: twaddle-app
     image: twaddle/twaddle-app
+    environment:
+      - TWADDLE_MAGICSTRING=Hello Docker!
+      - SPRING_CLOUD_STREAM_BINDERS_LOCAL_RABBIT_ENVIRONMENT_SPRING_RABBITMQ_HOST=twaddle-rabbitmq
+      - SPRING_DATASOURCE_HIKARI=twaddle-kibana
+      - ELASTICSEARCH_ADDRESS=twaddle-elasticsearch
     ports:
-      - 8080:8080
+      - 1337:1337
     depends_on:
       - twaddle-elasticsearch
       - twaddle-rabbitmq
     restart: on-failure
+    networks:
+      - twaddle-network
+
+networks:
+  twaddle-network:
+    external: false
