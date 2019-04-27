@@ -25,8 +25,8 @@ It also gave me the chance to work with a little bit of frontend technologies, t
 
 * Using Kibana to visualize data from ElasticSearch indices
 * Spring Boot will override application properties with environment variables, converting from dot-case to snake-case
-** E.g.: `elasticsearch.address` becomes `ELASTICSEARCH_ADDRESS`
-** This makes it really easy to deploy Spring Boot apps to a Docker environment
+  * E.g.: `elasticsearch.address` becomes `ELASTICSEARCH_ADDRESS`
+  * This makes it really easy to deploy Spring Boot apps to a Docker environment
 * Spring Cloud Stream bypasses message binder if publisher and subscriber resides in the same application context
 * Using Spring WebFlux, it is much more natural to implement SSE, however Spring also has an `SseEmitter` for the same purpose
 
