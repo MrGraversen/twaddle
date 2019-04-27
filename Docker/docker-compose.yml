@@ -38,7 +38,6 @@ services:
     environment:
       - TWADDLE_MAGICSTRING=Hello Docker!
       - SPRING_CLOUD_STREAM_BINDERS_LOCAL_RABBIT_ENVIRONMENT_SPRING_RABBITMQ_HOST=twaddle-rabbitmq
-      - SPRING_DATASOURCE_HIKARI=twaddle-kibana
       - ELASTICSEARCH_ADDRESS=twaddle-elasticsearch
     ports:
       - 1337:1337
